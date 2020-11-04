@@ -1,14 +1,14 @@
 # How to write native addons for Node.JS
 
-Firstly, I'd like to begin by trying to convience you on why you would do that in the first place. 
-Due to it's flexibility and safety checks on rutime, in most cases writing JS is easier that writting a C/C++ code.
+Firstly, I'd like to begin by trying to convenience you on why you would do that in the first place. 
+Due to it's flexibility and safety checks on runtime, in most cases writing JS is easier that writing a C/C++ code.
 
 Well, I can think of two special reasons:
 
 * In case you need to integrate a external library written in C/C++/Go/Rust in your codebase.
 * You may want to rewrite some of the modules in C++ for performance reasons, since it has less overhead.
 
-I hope those reasons have convienced you, so lets begin to write some code...
+I hope those reasons have convinced you, so lets begin to write some code...
 
 ## 1. The native code
 
@@ -42,20 +42,20 @@ namespace native_addon_example {
     using v8::Exception;
     using v8::Number;
 
-    // This is the wrapper function responsible to bridge all the V8 call arguments to our "sum" function
-    // After we get the result, we need to wrap it in a v8 value and set as the returned value
+    // This is the wrapper function responsible for bridging the V8 call to our functions
+    // After we get the result, we need to wrap it into a V8 value and set as the returned value
     void FuncSum(const FunctionCallbackInfo<Value>& args) {
         Isolate* isolate = args.GetIsolate();
         Local<Context> ctx = isolate->GetCurrentContext();
 
-        // Fetches the call arguments and convert it into a int
+        // Fetches the call arguments and converts it into an int
         int a = (int) args[0]->Int32Value(ctx).ToChecked();
         int b = (int) args[1]->Int32Value(ctx).ToChecked();
 
         // Call our function and store the result
         int result = sum(a, b);
 
-        // Wraps our result inside a v8 value
+        // Wraps our result inside a V8 value
         Local<Value> output = Number::New(isolate, result);
 
         // Set as the returned value
